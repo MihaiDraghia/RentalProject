@@ -4,7 +4,7 @@
 
 <html lang="it">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - Applicazione ASP.NET</title>
@@ -13,12 +13,15 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 </head>
 <body>
     <form runat="server">
+
+        <asp:Image ID="imgSafo" runat="server" ImageUrl="~/img/LOGO_SAFO_2016_69x50.png" Width="120" Height="90" ImageAlign="Right" />
+
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -47,13 +50,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">Nome applicazione</a>
+                    <a class="navbar-brand" runat="server" href="~/RicercaVeicolo">Cerca Veicolo</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">Informazioni</a></li>
-                        <li><a runat="server" href="~/Contact">Contatto</a></li>
+                        <li><a runat="server" href="~/InsertVeicolo">Nuovo Veicolo</a></li>
                     </ul>
                 </div>
             </div>
@@ -63,7 +64,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Applicazione ASP.NET</p>
+                <p>&copy; <%: DateTime.Now.Year %> Safo Group SpA</p>
             </footer>
         </div>
 

@@ -16,7 +16,7 @@ namespace RentalProject.Business.Models
         public int IdAlimentazione { get; set; }
         public string Note { get; set; }
         public bool IsNoleggiato { get; set; }
-
+        public int IdTipoStatus { get; set; }
     }
 
     public class VeicoloModelView
@@ -27,7 +27,8 @@ namespace RentalProject.Business.Models
         public string Targa { get; set; }
         public DateTime? DataImmatricolazione { get; set; }
         public bool IsNoleggiato { get; set; }
-
+        public int IdTipoStatus { get; set; }
     }
+
 
 }

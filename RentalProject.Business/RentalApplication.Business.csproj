@@ -44,10 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\AlimentazioneManager.cs" />
+    <Compile Include="Managers\ClienteManager.cs" />
     <Compile Include="Managers\MarcaManager.cs" />
+    <Compile Include="Managers\NoleggioManager.cs" />
     <Compile Include="Managers\VeicoloManager.cs" />
     <Compile Include="Models\AlimentazioneModel.cs" />
+    <Compile Include="Models\ClienteModel.cs" />
     <Compile Include="Models\MarcaModel.cs" />
+    <Compile Include="Models\NoleggioModel.cs" />
     <Compile Include="Models\VeicoloModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

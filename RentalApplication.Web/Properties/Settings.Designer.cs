@@ -25,8 +25,8 @@ namespace RentalApplication.Web.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sqlserverprincipalemd.database.windows.net;Initial Catalog=basicRenta" +
-            "lProject;User ID=mihaidraghia;Password=12345.Md")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sqlserverprincipale.database.windows.net;Initial Catalog=Stage2022;Us" +
+            "er ID=utente;Password=Safo2022!")]
         public string RENTALCONString {
             get {
                 return ((string)(this["RENTALCONString"]));

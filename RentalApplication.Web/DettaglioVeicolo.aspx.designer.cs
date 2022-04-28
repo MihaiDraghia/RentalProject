@@ -11,7 +11,7 @@ namespace RentalApplication.Web
 {
 
 
-    public partial class RicercaVeicolo
+    public partial class DettaglioVeicolo
     {
 
         /// <summary>
@@ -69,57 +69,84 @@ namespace RentalApplication.Web
         protected global::System.Web.UI.WebControls.TextBox txtTarga;
 
         /// <summary>
-        /// Controllo txtDataImmatricolazioneInizio.
+        /// Controllo txtDataImmatricolazione.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDataImmatricolazioneInizio;
+        protected global::System.Web.UI.WebControls.TextBox txtDataImmatricolazione;
 
         /// <summary>
-        /// Controllo txtDataImmatricolazioneFine.
+        /// Controllo ddlAlimentazione.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDataImmatricolazioneFine;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAlimentazione;
 
         /// <summary>
-        /// Controllo ddlNoleggiato.
+        /// Controllo txtNote.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlNoleggiato;
+        protected global::System.Web.UI.WebControls.TextBox txtNote;
 
         /// <summary>
-        /// Controllo btnRicerca.
+        /// Controllo txtNoleggiato.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRicerca;
+        protected global::System.Web.UI.WebControls.TextBox txtNoleggiato;
 
         /// <summary>
-        /// Controllo btnPulisci.
+        /// Controllo lblCliente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPulisci;
+        protected global::System.Web.UI.WebControls.Label lblCliente;
 
         /// <summary>
-        /// Controllo gvVeicolo.
+        /// Controllo txtCliente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvVeicolo;
+        protected global::System.Web.UI.WebControls.TextBox txtCliente;
+
+        /// <summary>
+        /// Controllo btnModifica.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnModifica;
+
+        /// <summary>
+        /// Controllo btnElimina.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnElimina;
+
+        /// <summary>
+        /// Controllo btnGestioneNoleggio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGestioneNoleggio;
     }
 }

@@ -12,8 +12,11 @@ using RentalProject.Business.Models;
 
 namespace RentalApplication.Web
 {
-    public partial class InsertVeicolo : System.Web.UI.Page
+    public partial class DettaglioVeicolo : System.Web.UI.Page
     {
+        public static int Id { get; set; }
+        public static bool IsNoleggiato { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             pnlVeicolo.BackColor = Color.AliceBlue;
@@ -22,38 +25,94 @@ namespace RentalApplication.Web
             {
                 return;
             }
+
+            Id = int.Parse(Request.QueryString["id"]);
+
             var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
             var marcaManager = new MarcaManager(Settings.Default.RENTALCONString);
             var alimentazioneManager = new AlimentazioneManager(Settings.Default.RENTALCONString);
+            var noleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
+
+
+            var veicoloModel = veicoloManager.GetVeicoloById(Id);
+
+            IsNoleggiato = veicoloModel.IsNoleggiato;
 
             List<MarcaModel> marcaList = marcaManager.GetMarcaList();
             ddlMarca.DataSource = marcaList;
             ddlMarca.DataTextField = nameof(MarcaModel.Descrizione);
             ddlMarca.DataValueField = nameof(MarcaModel.Id);
             ddlMarca.DataBind();
-            ddlMarca.Items.Insert(0, new ListItem("Seleziona", "-1"));
+
+            if (veicoloModel.IdMarca <= 0)
+            {
+                ddlMarca.Items.Insert(0, new ListItem("Seleziona", "-1"));
+            }
+
+            else
+            {
+                ddlMarca.SelectedValue = veicoloModel.IdMarca.ToString();
+            }
+
+            txtModello.Text = veicoloModel.Modello;
+            txtTarga.Text = veicoloModel.Targa;
+            txtDataImmatricolazione.Text = veicoloModel.DataImmatricolazione.ToString();
 
             List<AlimentazioneModel> alimentazioneList = alimentazioneManager.GetAlimentazioneList();
             ddlAlimentazione.DataSource = alimentazioneList;
             ddlAlimentazione.DataTextField = nameof(AlimentazioneModel.Descrizione);
             ddlAlimentazione.DataValueField = nameof(AlimentazioneModel.Id);
             ddlAlimentazione.DataBind();
-            ddlAlimentazione.Items.Insert(0, new ListItem("Seleziona", "-1"));
+
+            if (veicoloModel.IdAlimentazione <= 0)
+            {
+                ddlAlimentazione.Items.Insert(0, new ListItem("Seleziona", "-1"));
+            }
+
+            else
+            {
+                ddlAlimentazione.SelectedValue = veicoloModel.IdAlimentazione.ToString();
+            }
+
+            txtNote.Text = veicoloModel.Note;
+            txtNoleggiato.Text = veicoloModel.IsNoleggiato.ToString();
+
+            if (veicoloModel.IsNoleggiato.Equals(true))
+            {
+                lblCliente.Visible = true;
+                txtCliente.Visible = true;
+                txtCliente.Text = noleggioManager.GetNomeNoleggiatoreByIdVeicolo(Id);
+            }
+            else
+            {
+                lblCliente.Visible = false;
+                txtCliente.Visible = false;
+            }
+
+            if (veicoloModel.IsNoleggiato.Equals(true))
+            {
+                btnElimina.Enabled = false;
+            }
+            else
+            {
+                btnElimina.Enabled = true;
+            }
 
         }
 
-        protected void btnInserisci_Click(object sender, EventArgs e)
+        protected void btnModifica_Click(object sender, EventArgs e)
         {
             var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
 
-            if (!isFormInsertValido())
+            if (!isFormUpdateValido())
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Si è verificato un errore, assicurati di aver inserito i campi necessari ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore modifica veicolo ");
                 return;
             }
 
             var veicoloModel = new VeicoloModel();
 
+            veicoloModel.Id = Id;
             veicoloModel.IdMarca = int.Parse(ddlMarca.SelectedValue);
             veicoloModel.Modello = txtModello.Text;
             veicoloModel.Targa = txtTarga.Text;
@@ -63,21 +122,35 @@ namespace RentalApplication.Web
             }
             veicoloModel.IdAlimentazione = int.Parse(ddlAlimentazione.SelectedValue);
             veicoloModel.Note = txtNote.Text;
-            veicoloModel.IsNoleggiato = false;
-            veicoloModel.IdTipoStatus = 13;
 
-            var inserito = veicoloManager.InsertVeicolo(veicoloModel);
+            var modificato = veicoloManager.UpdateVeicolo(veicoloModel);
 
-            if (!inserito)
+            if (!modificato)
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore inserimento veicolo ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore modifica veicolo ");
                 return;
             }
 
-            infoControl.SetMessage(InfoControl.TipoInfo.Success, "Veicolo inserito ");
+            infoControl.SetMessage(InfoControl.TipoInfo.Success, "Veicolo modificato ");
         }
 
-        protected bool isFormInsertValido()
+        protected void btnElimina_Click(object sender, EventArgs e)
+        {
+            var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
+
+            var eliminato = veicoloManager.EliminaVeicolo(Id);
+
+            if (!eliminato)
+            {
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore eliminazione veicolo ");
+                return;
+            }
+
+            infoControl.SetMessage(InfoControl.TipoInfo.Success, "Veicolo eliminato ");
+
+        }
+
+        protected bool isFormUpdateValido()
         {
             bool verificaCorrettezza = true;
 
@@ -144,7 +217,19 @@ namespace RentalApplication.Web
             return verificaCorrettezza;
         }
 
+        protected void btnGestisciNoleggio_Click(object sender, EventArgs e)
+        {
+            if (IsNoleggiato.Equals(true))
+            {
+                Response.Redirect("~/GestioneNoleggiato.aspx" + $"?id={Id}");
 
+            }
+            else
+            {
+                Response.Redirect("~/GestioneNonNoleggiato.aspx" + $"?id={Id}");
+
+            }
+        }
 
     }
 }

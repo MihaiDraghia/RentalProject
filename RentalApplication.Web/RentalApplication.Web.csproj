@@ -114,8 +114,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="Controls\InfoControl.ascx" />
     <Content Include="Default.aspx" />
+    <Content Include="DettaglioVeicolo.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="GestioneNoleggiato.aspx" />
+    <Content Include="GestioneNonNoleggiato.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -130,6 +133,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="img\LOGO_SAFO_2016_69x50.png" />
     <Content Include="InsertVeicolo.aspx" />
     <Content Include="RicercaVeicolo.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -196,6 +200,27 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DettaglioVeicolo.aspx.cs">
+      <DependentUpon>DettaglioVeicolo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DettaglioVeicolo.aspx.designer.cs">
+      <DependentUpon>DettaglioVeicolo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestioneNoleggiato.aspx.cs">
+      <DependentUpon>GestioneNoleggiato.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestioneNoleggiato.aspx.designer.cs">
+      <DependentUpon>GestioneNoleggiato.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestioneNonNoleggiato.aspx.cs">
+      <DependentUpon>GestioneNonNoleggiato.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestioneNonNoleggiato.aspx.designer.cs">
+      <DependentUpon>GestioneNonNoleggiato.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
