@@ -23,8 +23,23 @@ namespace RentalProject.Business.Models
         public string Marca { get; set; }
         public string Modello { get; set; }
         public string Targa { get; set; }
-
     }
+
+    public class DatiNoleggiato
+    {
+        public int IdVeicolo { get; set; }
+        public string Marca { get; set; }
+        public string Modello { get; set; }
+        public string Targa { get; set; }
+        public string Nome { get; set; }
+        public string Cognome { get; set; }
+        public string CodiceFiscale { get; set; }
+        public string Email { get; set; }
+        public string Telefono { get; set; }
+        public int IdNoleggio { get; set; }
+        public DateTime? DataInizioNoleggio { get; set; }
+    }
+
 
 
 }

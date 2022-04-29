@@ -14,10 +14,10 @@ namespace RentalApplication.Web
 {
     public partial class GestioneNonNoleggiato : System.Web.UI.Page
     {
-        public static int IdVeicolo { get; set; }
-        public static NoleggioManager NoleggioManager { get; set; }
-        public static ClienteManager ClienteManager { get; set; }
-        public static int IdClienteCercato { get; set; }
+        protected static int IdVeicolo { get; set; }
+        protected static NoleggioManager NoleggioManager { get; set; }
+        protected static ClienteManager ClienteManager { get; set; }
+        protected static int IdClienteCercato { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -171,7 +171,7 @@ namespace RentalApplication.Web
 
                 else
                 {
-                    infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore noleggiamento ");
+                    infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Internal Server Error ");
                 }
 
             }
@@ -192,7 +192,7 @@ namespace RentalApplication.Web
 
                 else
                 {
-                    infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore noleggiamento ");
+                    infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Internal Server Error ");
                 }
 
             }

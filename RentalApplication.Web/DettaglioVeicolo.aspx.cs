@@ -14,8 +14,8 @@ namespace RentalApplication.Web
 {
     public partial class DettaglioVeicolo : System.Web.UI.Page
     {
-        public static int Id { get; set; }
-        public static bool IsNoleggiato { get; set; }
+        protected static int IdVeicolo { get; set; }
+        protected static bool IsNoleggiato { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +26,7 @@ namespace RentalApplication.Web
                 return;
             }
 
-            Id = int.Parse(Request.QueryString["id"]);
+            IdVeicolo = int.Parse(Request.QueryString["id"]);
 
             var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
             var marcaManager = new MarcaManager(Settings.Default.RENTALCONString);
@@ -34,7 +34,7 @@ namespace RentalApplication.Web
             var noleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
 
 
-            var veicoloModel = veicoloManager.GetVeicoloById(Id);
+            var veicoloModel = veicoloManager.GetVeicoloById(IdVeicolo);
 
             IsNoleggiato = veicoloModel.IsNoleggiato;
 
@@ -79,9 +79,13 @@ namespace RentalApplication.Web
 
             if (veicoloModel.IsNoleggiato.Equals(true))
             {
+                var datiNoleggiato = new DatiNoleggiato();
+
+                datiNoleggiato = noleggioManager.GetDatiNoleggiato(IdVeicolo);
+
                 lblCliente.Visible = true;
                 txtCliente.Visible = true;
-                txtCliente.Text = noleggioManager.GetNomeNoleggiatoreByIdVeicolo(Id);
+                txtCliente.Text = datiNoleggiato.Nome + " " + datiNoleggiato.Cognome;
             }
             else
             {
@@ -106,13 +110,13 @@ namespace RentalApplication.Web
 
             if (!isFormUpdateValido())
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore modifica veicolo ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Si è verificato un errore, verifica la completezza dei campi necessari ");
                 return;
             }
 
             var veicoloModel = new VeicoloModel();
 
-            veicoloModel.Id = Id;
+            veicoloModel.Id = IdVeicolo;
             veicoloModel.IdMarca = int.Parse(ddlMarca.SelectedValue);
             veicoloModel.Modello = txtModello.Text;
             veicoloModel.Targa = txtTarga.Text;
@@ -127,7 +131,7 @@ namespace RentalApplication.Web
 
             if (!modificato)
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore modifica veicolo ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Internal Server Error ");
                 return;
             }
 
@@ -138,11 +142,11 @@ namespace RentalApplication.Web
         {
             var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
 
-            var eliminato = veicoloManager.EliminaVeicolo(Id);
+            var eliminato = veicoloManager.EliminaVeicolo(IdVeicolo);
 
             if (!eliminato)
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore eliminazione veicolo ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Internal Server Error ");
                 return;
             }
 
@@ -221,12 +225,12 @@ namespace RentalApplication.Web
         {
             if (IsNoleggiato.Equals(true))
             {
-                Response.Redirect("~/GestioneNoleggiato.aspx" + $"?id={Id}");
+                Response.Redirect("~/GestioneNoleggiato.aspx" + $"?id={IdVeicolo}");
 
             }
             else
             {
-                Response.Redirect("~/GestioneNonNoleggiato.aspx" + $"?id={Id}");
+                Response.Redirect("~/GestioneNonNoleggiato.aspx" + $"?id={IdVeicolo}");
 
             }
         }

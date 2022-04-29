@@ -70,7 +70,7 @@ namespace RentalApplication.Web
 
             if (!inserito)
             {
-                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Errore inserimento veicolo ");
+                infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Internal Server Error ");
                 return;
             }
 

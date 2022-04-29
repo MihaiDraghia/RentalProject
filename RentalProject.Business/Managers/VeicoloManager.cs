@@ -439,7 +439,7 @@ namespace RentalProject.Business.Managers
 
         }
 
-        public bool UpdateVeicoloANoleggiato(int id)
+        public bool UpdateVeicoloANoleggiato(int idVeicolo)
         {
             bool isModificato = false;
 
@@ -457,7 +457,7 @@ namespace RentalProject.Business.Managers
 
                 using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
                 {
-                    sqlCommand.Parameters.AddWithValue("@Id", id);
+                    sqlCommand.Parameters.AddWithValue("@Id", idVeicolo);
                     sqlCommand.Parameters.AddWithValue("@IsNoleggiato", 1);
 
                     var numRigheInserite = sqlCommand.ExecuteNonQuery();
@@ -468,7 +468,34 @@ namespace RentalProject.Business.Managers
             return isModificato;
         }
 
+        public bool UpdateVeicoloANonNoleggiato(int idVeicolo)
+        {
+            bool isModificato = false;
 
+            var sb = new StringBuilder();
+
+            sb.AppendLine("UPDATE ");
+            sb.AppendLine("[dbo].[MDVeicoli] ");
+            sb.AppendLine("SET ");
+            sb.AppendLine($"[IsNoleggiato]=@IsNoleggiato");
+            sb.AppendLine($"WHERE Id=@Id");
+
+            using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@Id", idVeicolo);
+                    sqlCommand.Parameters.AddWithValue("@IsNoleggiato", 0);
+
+                    var numRigheInserite = sqlCommand.ExecuteNonQuery();
+
+                    isModificato = true;
+                }
+            }
+            return isModificato;
+        }
 
     }
 }

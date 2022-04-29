@@ -49,7 +49,7 @@
                 </asp:TextBox>
             </div>
             <div class="form-group">
-                <asp:Label for="txtCliente" ID="lblCliente" Text="Nome Cliente" runat="server" Visible="False"></asp:Label>
+                <asp:Label for="txtCliente" ID="lblCliente" Text="Nominativo Cliente" runat="server" Visible="False"></asp:Label>
                 <asp:TextBox runat="server" ID="txtCliente" CssClass="form-control" ReadOnly="True" Visible="False">
                 </asp:TextBox>
             </div>

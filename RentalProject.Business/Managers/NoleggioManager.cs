@@ -88,26 +88,71 @@ namespace RentalProject.Business.Managers
             return isInserito;
         }
 
-        public string GetNomeNoleggiatoreByIdVeicolo(int id)
+        public bool UpdateFineNoleggio(int idNoleggio)
         {
-            string nominativo;
+            bool isModificato = false;
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("SELECT");
-            sb.AppendLine("c.[Nome]");
-            sb.AppendLine(",c.[Cognome]");
+            sb.AppendLine("UPDATE ");
+            sb.AppendLine("[dbo].[MDNoleggi] ");
+            sb.AppendLine("SET ");
+            sb.AppendLine($"\t[DataFineNoleggio]=@DataFineNoleggio");
+            sb.AppendLine($"\t,[IsAttivo]=@IsAttivo");
+            sb.AppendLine($"WHERE Id=@Id");
+
+            using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@Id", idNoleggio);
+                    sqlCommand.Parameters.AddWithValue("@DataFineNoleggio", DateTime.Now);
+                    sqlCommand.Parameters.AddWithValue("@IsAttivo", 0);
+
+                    var numRigheInserite = sqlCommand.ExecuteNonQuery();
+
+                    isModificato = true;
+                }
+            }
+            return isModificato;
+        }
+
+        public DatiNoleggiato GetDatiNoleggiato(int idVeicolo)
+        {
+            var datiNoleggiato = new DatiNoleggiato();
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT ");
+            sb.AppendLine("\t n.[Id] AS IdNoleggio ");
+            sb.AppendLine("\t,n.[DataInizioNoleggio] ");
+            sb.AppendLine("\t,m.[Descrizione] AS Marca");
+            sb.AppendLine("\t,v.[Modello] ");
+            sb.AppendLine("\t,v.[Targa] ");
+            sb.AppendLine("\t,c.[Nome] ");
+            sb.AppendLine("\t,c.[Cognome] ");
+            sb.AppendLine("\t,c.[CodiceFiscale] ");
+            sb.AppendLine("\t,c.[Email] ");
+            sb.AppendLine("\t,c.[Telefono] ");
             sb.AppendLine("FROM [dbo].[MDNoleggi] n ");
-            sb.AppendLine("RIGHT JOIN [dbo].[MDClienti] c ");
-            sb.AppendLine("on n.[IdCliente] = c.[Id] ");
-            sb.AppendLine($"WHERE n.[IsAttivo] = 1 ");
-            sb.AppendLine($"AND c.[IdTipoStatus] = 13 ");
-            sb.AppendLine($"AND n.[IdVeicolo]=@Id");
+            sb.AppendLine("LEFT JOIN [dbo].[MDVeicoli] v ");
+            sb.AppendLine("ON n.[IdVeicolo] = v.[Id]");
+            sb.AppendLine("LEFT JOIN [dbo].[MDClienti] c ");
+            sb.AppendLine("ON n.[IdCliente] = c.[Id]");
+            sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
+            sb.AppendLine("ON v.[IdMarca] = m.[Id]");
+            sb.AppendLine($"WHERE n.[IdVeicolo]=@IdVeicolo ");
+            sb.AppendLine($"AND n.[IsAttivo]=@IsAttivo");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {
                 var ds = new DataSet();
-                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.Parameters.AddWithValue("@IdVeicolo", idVeicolo);
+                cmd.Parameters.AddWithValue("@IsAttivo", 1);
+
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
                     conn.Open();
@@ -119,23 +164,30 @@ namespace RentalProject.Business.Managers
                     }
                 }
 
-                if (ds.Tables.Count <= 0) return String.Empty;
+                if (ds.Tables.Count <= 0) return new DatiNoleggiato();
                 var dataTable = ds.Tables[0];
-                if (dataTable == null || dataTable.Rows.Count <= 0) return String.Empty;
+                if (dataTable == null || dataTable.Rows.Count <= 0) return new DatiNoleggiato();
 
                 DataRow dataRow = dataTable.Rows[0];
 
-                string nome = dataRow.Field<string>("Nome");
-                string cognome = dataRow.Field<string>("Cognome");
+                datiNoleggiato.IdNoleggio = dataRow.Field<int>("IdNoleggio");
+                datiNoleggiato.DataInizioNoleggio = dataRow.Field<DateTime?>("DataInizioNoleggio");
+                datiNoleggiato.Marca = dataRow.Field<string>("Marca");
+                datiNoleggiato.Modello = dataRow.Field<string>("Modello");
+                datiNoleggiato.Targa = dataRow.Field<string>("Targa");
+                datiNoleggiato.Nome = dataRow.Field<string>("Nome");
+                datiNoleggiato.Cognome = dataRow.Field<string>("Cognome");
+                datiNoleggiato.CodiceFiscale = dataRow.Field<string>("CodiceFiscale");
+                datiNoleggiato.Email = dataRow.Field<string>("Email");
+                datiNoleggiato.Telefono = dataRow.Field<string>("Telefono");
 
-                nominativo = nome + " " + cognome;
             }
 
-            return nominativo;
+            return datiNoleggiato;
 
         }
 
-        public DatiNonNoleggiato GetDatiNonNoleggiato(int id)
+        public DatiNonNoleggiato GetDatiNonNoleggiato(int idVeicolo)
         {
             var datiVeicolo = new DatiNonNoleggiato();
 
@@ -155,7 +207,7 @@ namespace RentalProject.Business.Managers
             using (var cmd = new SqlCommand(sb.ToString()))
             {
                 var ds = new DataSet();
-                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Id", idVeicolo);
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
                     conn.Open();
@@ -290,6 +342,55 @@ namespace RentalProject.Business.Managers
 
             return isRiuscito;
         }
+
+        public bool TransactionFineNoleggio(int idNoleggio, int idVeicolo)
+        {
+            bool isRiuscito = false;
+
+            using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = connection.CreateCommand();
+                SqlTransaction transaction;
+
+                transaction = connection.BeginTransaction("SampleTransaction");
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                var noleggioManager = new NoleggioManager(this.ConnectionString);
+                var veicoloManager = new VeicoloManager(this.ConnectionString);
+
+                try
+                {
+                    noleggioManager.UpdateFineNoleggio(idNoleggio);
+
+                    veicoloManager.UpdateVeicoloANonNoleggiato(idVeicolo);
+
+
+                    transaction.Commit();
+
+                    isRiuscito = true;
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        transaction.Rollback();
+                    }
+                    catch (Exception ex2)
+                    {
+
+                    }
+
+                }
+            }
+
+            return isRiuscito;
+        }
+
+
 
     }
 }

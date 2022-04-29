@@ -50,7 +50,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/RicercaVeicolo">Cerca Veicolo</a>
+                    <a class="navbar-brand" runat="server" href="~/RicercaVeicolo">Gestione Noleggi</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
