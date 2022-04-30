@@ -15,9 +15,9 @@ namespace RentalApplication.Web
     public partial class GestioneNonNoleggiato : System.Web.UI.Page
     {
         protected static int IdVeicolo { get; set; }
+        protected static int IdClienteCercato { get; set; }
         protected static NoleggioManager NoleggioManager { get; set; }
         protected static ClienteManager ClienteManager { get; set; }
-        protected static int IdClienteCercato { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -214,7 +214,7 @@ namespace RentalApplication.Web
 
             var idCliente = gvCercaPersona.SelectedDataKey["Id"].ToString();
 
-            var clienteModel = ClienteManager.GetClienteById(int.Parse(idCliente));
+            var clienteModel = ClienteManager.GetCliente(int.Parse(idCliente));
 
             txtCercaNome.Text = clienteModel.Nome;
             txtCercaCognome.Text = clienteModel.Cognome;

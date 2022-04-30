@@ -194,20 +194,23 @@ namespace RentalProject.Business.Managers
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT ");
-            sb.AppendLine("v.[Id] ");
-            sb.AppendLine(",m.[Descrizione] as [Marca]");
-            sb.AppendLine(",v.[Modello]");
-            sb.AppendLine(",v.[Targa]");
+            sb.AppendLine("\t v.[Id] ");
+            sb.AppendLine("\t,m.[Descrizione] as [Marca]");
+            sb.AppendLine("\t,v.[Modello]");
+            sb.AppendLine("\t,v.[Targa]");
             sb.AppendLine("FROM [dbo].[MDVeicoli] v ");
             sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
             sb.AppendLine("ON v.[IdMarca] = m.[Id]");
-            sb.AppendLine($"WHERE v.[IdTipoStatus]=13 ");
+            sb.AppendLine($"WHERE v.[IdTipoStatus]=@IdTipoStatus ");
             sb.AppendLine($"AND v.[Id]=@Id");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {
                 var ds = new DataSet();
+
                 cmd.Parameters.AddWithValue("@Id", idVeicolo);
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
                     conn.Open();

@@ -26,22 +26,22 @@ namespace RentalProject.Business.Managers
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT ");
-            sb.AppendLine("[Id]");
-            sb.AppendLine(",[Nome]");
-            sb.AppendLine(",[Cognome]");
-            sb.AppendLine(",[CodiceFiscale]");
-            sb.AppendLine(",[DataNascita]");
-            sb.AppendLine(",[Sesso]");
-            sb.AppendLine(",[Indirizzo]");
-            sb.AppendLine(",[Citta]");
-            sb.AppendLine(",[Cap]");
-            sb.AppendLine(",[Email]");
-            sb.AppendLine(",[Telefono]");
-            sb.AppendLine(",[IdTipoStatus]");
-            sb.AppendLine(",[DataInserimento]");
-            sb.AppendLine(",[DataModifica]");
+            sb.AppendLine("\t[Id]");
+            sb.AppendLine("\t,[Nome]");
+            sb.AppendLine("\t,[Cognome]");
+            sb.AppendLine("\t,[CodiceFiscale]");
+            sb.AppendLine("\t,[DataNascita]");
+            sb.AppendLine("\t,[Sesso]");
+            sb.AppendLine("\t,[Indirizzo]");
+            sb.AppendLine("\t,[Citta]");
+            sb.AppendLine("\t,[Cap]");
+            sb.AppendLine("\t,[Email]");
+            sb.AppendLine("\t,[Telefono]");
+            sb.AppendLine("\t,[IdTipoStatus]");
+            sb.AppendLine("\t,[DataInserimento]");
+            sb.AppendLine("\t,[DataModifica]");
             sb.AppendLine("FROM [dbo].[MDClienti] ");
-            sb.AppendLine("WHERE [IdTipoStatus]=13 ");
+            sb.AppendLine("WHERE [IdTipoStatus]=@IdTipoStatus ");
 
 
             if (!string.IsNullOrEmpty(ricercaCliente.Nome))
@@ -97,6 +97,8 @@ namespace RentalProject.Business.Managers
                     cmd.Parameters.AddWithValue("@Telefono", ricercaCliente.Telefono);
                 }
 
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
                 var ds = new DataSet();
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
@@ -146,34 +148,37 @@ namespace RentalProject.Business.Managers
 
         }
 
-        public ClienteModel GetClienteById(int id)
+        public ClienteModel GetCliente(int idCliente)
         {
             var clienteModel = new ClienteModel();
 
             var sb = new StringBuilder();
             sb.AppendLine("SELECT ");
-            sb.AppendLine("[Id]");
-            sb.AppendLine(",[Nome]");
-            sb.AppendLine(",[Cognome]");
-            sb.AppendLine(",[CodiceFiscale]");
-            sb.AppendLine(",[DataNascita]");
-            sb.AppendLine(",[Sesso]");
-            sb.AppendLine(",[Indirizzo]");
-            sb.AppendLine(",[Citta]");
-            sb.AppendLine(",[Cap]");
-            sb.AppendLine(",[Email]");
-            sb.AppendLine(",[Telefono]");
-            sb.AppendLine(",[IdTipoStatus]");
-            sb.AppendLine(",[DataInserimento]");
-            sb.AppendLine(",[DataModifica]");
+            sb.AppendLine("\t[Id]");
+            sb.AppendLine("\t,[Nome]");
+            sb.AppendLine("\t,[Cognome]");
+            sb.AppendLine("\t,[CodiceFiscale]");
+            sb.AppendLine("\t,[DataNascita]");
+            sb.AppendLine("\t,[Sesso]");
+            sb.AppendLine("\t,[Indirizzo]");
+            sb.AppendLine("\t,[Citta]");
+            sb.AppendLine("\t,[Cap]");
+            sb.AppendLine("\t,[Email]");
+            sb.AppendLine("\t,[Telefono]");
+            sb.AppendLine("\t,[IdTipoStatus]");
+            sb.AppendLine("\t,[DataInserimento]");
+            sb.AppendLine("\t,[DataModifica]");
             sb.AppendLine("FROM [dbo].[MDClienti] ");
-            sb.AppendLine("WHERE [IdTipoStatus]=13 ");
+            sb.AppendLine("WHERE [IdTipoStatus]=@IdTipoStatus ");
             sb.AppendLine($"AND Id=@Id");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {
                 var ds = new DataSet();
-                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.Parameters.AddWithValue("@Id", idCliente);
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
                     conn.Open();
@@ -352,12 +357,9 @@ namespace RentalProject.Business.Managers
                         cmd.Parameters.AddWithValue("@Telefono", DBNull.Value);
                     }
 
-
                     cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
                     cmd.Parameters.AddWithValue("@DataInserimento", DateTime.Now);
                     cmd.Parameters.AddWithValue("@DataModifica", DateTime.Now);
-
-
 
                     object value = cmd.ExecuteScalar();
                     if (value != DBNull.Value && value != null)

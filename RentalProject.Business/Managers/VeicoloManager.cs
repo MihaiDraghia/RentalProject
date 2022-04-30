@@ -26,23 +26,27 @@ namespace RentalProject.Business.Managers
             var sb = new StringBuilder();
 
             sb.AppendLine("INSERT INTO [dbo].[MDVeicoli] (");
-            sb.AppendLine("[dbo].[MDVeicoli].[IdMarca]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Modello]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Targa]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[DataImmatricolazione]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IdAlimentazione]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IsNoleggiato]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Note]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IdTipoStatus]");
+            sb.AppendLine("\t[IdMarca]");
+            sb.AppendLine("\t,[Modello]");
+            sb.AppendLine("\t,[Targa]");
+            sb.AppendLine("\t,[DataImmatricolazione]");
+            sb.AppendLine("\t,[IdAlimentazione]");
+            sb.AppendLine("\t,[IsNoleggiato]");
+            sb.AppendLine("\t,[Note]");
+            sb.AppendLine("\t,[IdTipoStatus]");
+            sb.AppendLine("\t,[DataInserimento]");
+            sb.AppendLine("\t,[DataModifica]");
             sb.AppendLine(") VALUES (");
-            sb.AppendLine("@IdMarca");
-            sb.AppendLine(",@Modello");
-            sb.AppendLine(",@Targa");
-            sb.AppendLine(",@DataImmatricolazione");
-            sb.AppendLine(",@IdAlimentazione");
-            sb.AppendLine(",@IsNoleggiato");
-            sb.AppendLine(",@Note");
-            sb.AppendLine(",@IdTipoStatus");
+            sb.AppendLine("\t@IdMarca");
+            sb.AppendLine("\t,@Modello");
+            sb.AppendLine("\t,@Targa");
+            sb.AppendLine("\t,@DataImmatricolazione");
+            sb.AppendLine("\t,@IdAlimentazione");
+            sb.AppendLine("\t,@IsNoleggiato");
+            sb.AppendLine("\t,@Note");
+            sb.AppendLine("\t,@IdTipoStatus");
+            sb.AppendLine("\t,@DataInserimento");
+            sb.AppendLine("\t,@DataModifica");
             sb.AppendLine(")");
 
             using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
@@ -50,6 +54,10 @@ namespace RentalProject.Business.Managers
                 sqlConnection.Open();
                 using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
                 {
+                    sqlCommand.Parameters.AddWithValue("@DataInserimento", DateTime.Now);
+                    sqlCommand.Parameters.AddWithValue("@DataModifica", DateTime.Now);
+                    sqlCommand.Parameters.AddWithValue("@IsNoleggiato", 0);
+                    sqlCommand.Parameters.AddWithValue("@IdTipoStatus", 13);
 
                     if (!(int.TryParse(veicoloModel.IdMarca.ToString(), out int idMarcaInt) && idMarcaInt > 0))
                     {
@@ -101,15 +109,6 @@ namespace RentalProject.Business.Managers
                     }
 
 
-                    if (!bool.TryParse(veicoloModel.IsNoleggiato.ToString(), out bool isNoleggiatoBool))
-                    {
-                        sqlCommand.Parameters.AddWithValue("@IsNoleggiato", DBNull.Value);
-                    }
-                    else
-                    {
-                        sqlCommand.Parameters.AddWithValue("@IsNoleggiato", veicoloModel.IsNoleggiato);
-                    }
-
                     if (string.IsNullOrEmpty(veicoloModel.Note))
                     {
                         sqlCommand.Parameters.AddWithValue("@Note", DBNull.Value);
@@ -117,15 +116,6 @@ namespace RentalProject.Business.Managers
                     else
                     {
                         sqlCommand.Parameters.AddWithValue("@Note", veicoloModel.Note);
-                    }
-
-                    if (veicoloModel.IdTipoStatus != 12 && veicoloModel.IdTipoStatus != 13)
-                    {
-                        sqlCommand.Parameters.AddWithValue("@IdTipoStatus", DBNull.Value);
-                    }
-                    else
-                    {
-                        sqlCommand.Parameters.AddWithValue("@IdTipoStatus", veicoloModel.IdTipoStatus);
                     }
 
                     var numRigheInserite = sqlCommand.ExecuteNonQuery();
@@ -143,17 +133,17 @@ namespace RentalProject.Business.Managers
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT");
-            sb.AppendLine("v.[Id]");
-            sb.AppendLine(",m.[Descrizione]");
-            sb.AppendLine(",v.[Modello]");
-            sb.AppendLine(",v.[Targa]");
-            sb.AppendLine(",v.[DataImmatricolazione]");
-            sb.AppendLine(",v.[IsNoleggiato]");
-            sb.AppendLine(",v.[IdTipoStatus]");
+            sb.AppendLine("\t v.[Id]");
+            sb.AppendLine("\t,m.[Descrizione]");
+            sb.AppendLine("\t,v.[Modello]");
+            sb.AppendLine("\t,v.[Targa]");
+            sb.AppendLine("\t,v.[DataImmatricolazione]");
+            sb.AppendLine("\t,v.[IsNoleggiato]");
+            sb.AppendLine("\t,v.[IdTipoStatus]");
             sb.AppendLine("FROM [dbo].[MDVeicoli] v ");
             sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
             sb.AppendLine("ON v.[IdMarca] = m.[Id]");
-            sb.AppendLine("WHERE v.[IdTipoStatus]=13 ");
+            sb.AppendLine("WHERE v.[IdTipoStatus]=@IdTipoStatus ");
 
             if (int.TryParse(ricercaVeicolo.IdMarca.ToString(), out int idMarcaInt) && idMarcaInt > 0)
             {
@@ -219,6 +209,8 @@ namespace RentalProject.Business.Managers
                     cmd.Parameters.AddWithValue("@IsNoleggiato", ricercaVeicolo.IsNoleggiato);
                 }
 
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
                 var ds = new DataSet();
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
@@ -262,30 +254,33 @@ namespace RentalProject.Business.Managers
 
         }
 
-        public VeicoloModel GetVeicoloById(int id)
+        public VeicoloModel GetVeicolo(int idVeicolo)
         {
             var veicoloModel = new VeicoloModel();
 
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT");
-            sb.AppendLine("[dbo].[MDVeicoli].[Id]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IdMarca]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Modello]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Targa]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[DataImmatricolazione]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IdAlimentazione]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IsNoleggiato]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[Note]");
-            sb.AppendLine(",[dbo].[MDVeicoli].[IdTipoStatus]");
+            sb.AppendLine("\t [Id]");
+            sb.AppendLine("\t,[IdMarca]");
+            sb.AppendLine("\t,[Modello]");
+            sb.AppendLine("\t,[Targa]");
+            sb.AppendLine("\t,[DataImmatricolazione]");
+            sb.AppendLine("\t,[IdAlimentazione]");
+            sb.AppendLine("\t,[IsNoleggiato]");
+            sb.AppendLine("\t,[Note]");
+            sb.AppendLine("\t,[IdTipoStatus]");
             sb.AppendLine("FROM [dbo].[MDVeicoli]");
-            sb.AppendLine($"WHERE [dbo].[MDVeicoli].[IdTipoStatus]=13 ");
+            sb.AppendLine($"WHERE [IdTipoStatus]=@IdTipoStatus ");
             sb.AppendLine($"AND Id=@Id");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {
                 var ds = new DataSet();
-                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.Parameters.AddWithValue("@Id", idVeicolo);
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
                 using (var conn = new SqlConnection(this.ConnectionString))
                 {
                     conn.Open();
@@ -327,12 +322,13 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("UPDATE ");
             sb.AppendLine("[dbo].[MDVeicoli] ");
             sb.AppendLine("SET ");
-            sb.AppendLine($"[IdMarca]=@IdMarca");
-            sb.AppendLine($",[Modello]=@Modello");
-            sb.AppendLine($",[Targa]=@Targa");
-            sb.AppendLine($",[DataImmatricolazione]=@DataImmatricolazione");
-            sb.AppendLine($",[IdAlimentazione]=@IdAlimentazione");
-            sb.AppendLine($",[Note]=@Note");
+            sb.AppendLine($"\t [IdMarca]=@IdMarca");
+            sb.AppendLine($"\t,[Modello]=@Modello");
+            sb.AppendLine($"\t,[Targa]=@Targa");
+            sb.AppendLine($"\t,[DataImmatricolazione]=@DataImmatricolazione");
+            sb.AppendLine($"\t,[IdAlimentazione]=@IdAlimentazione");
+            sb.AppendLine($"\t,[Note]=@Note");
+            sb.AppendLine($"\t,[DataModifica]=@DataModifica");
             sb.AppendLine($"WHERE Id=@Id");
 
             using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
@@ -342,6 +338,7 @@ namespace RentalProject.Business.Managers
                 using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
                 {
                     sqlCommand.Parameters.AddWithValue("@Id", veicoloModel.Id);
+                    sqlCommand.Parameters.AddWithValue("@DataModifica", DateTime.Now);
 
                     if (veicoloModel.IdMarca <= 0)
                     {
@@ -410,7 +407,7 @@ namespace RentalProject.Business.Managers
             return isInserito;
         }
 
-        public bool EliminaVeicolo(int id)
+        public bool EliminaVeicolo(int idVeicolo)
         {
             bool isEliminato = false;
 
@@ -419,7 +416,7 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("UPDATE ");
             sb.AppendLine("[dbo].[MDVeicoli] ");
             sb.AppendLine("SET ");
-            sb.AppendLine($"[IdTipoStatus]=12");
+            sb.AppendLine($"\t[IdTipoStatus]=@IdTipoStatus");
             sb.AppendLine($"WHERE Id=@Id");
 
             using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
@@ -428,7 +425,8 @@ namespace RentalProject.Business.Managers
 
                 using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
                 {
-                    sqlCommand.Parameters.AddWithValue("@Id", id);
+                    sqlCommand.Parameters.AddWithValue("@Id", idVeicolo);
+                    sqlCommand.Parameters.AddWithValue("@IdTipoStatus", 12);
 
                     var numRigheInserite = sqlCommand.ExecuteNonQuery();
 
@@ -448,7 +446,7 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("UPDATE ");
             sb.AppendLine("[dbo].[MDVeicoli] ");
             sb.AppendLine("SET ");
-            sb.AppendLine($"[IsNoleggiato]=@IsNoleggiato");
+            sb.AppendLine($"\t[IsNoleggiato]=@IsNoleggiato");
             sb.AppendLine($"WHERE Id=@Id");
 
             using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
@@ -477,7 +475,7 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("UPDATE ");
             sb.AppendLine("[dbo].[MDVeicoli] ");
             sb.AppendLine("SET ");
-            sb.AppendLine($"[IsNoleggiato]=@IsNoleggiato");
+            sb.AppendLine($"\t[IsNoleggiato]=@IsNoleggiato");
             sb.AppendLine($"WHERE Id=@Id");
 
             using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))

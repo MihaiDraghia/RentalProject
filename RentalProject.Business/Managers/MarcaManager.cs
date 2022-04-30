@@ -26,10 +26,10 @@ namespace RentalProject.Business.Managers
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT");
-            sb.AppendLine("[dbo].[MDMarca].[Id]");
-            sb.AppendLine(",[dbo].[MDMarca].[Descrizione]");
+            sb.AppendLine("\t[Id]");
+            sb.AppendLine("\t,[Descrizione]");
             sb.AppendLine("FROM [dbo].[MDMarca]");
-            sb.AppendLine("ORDER BY [dbo].[MDMarca].[Descrizione]");
+            sb.AppendLine("ORDER BY [Descrizione]");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {

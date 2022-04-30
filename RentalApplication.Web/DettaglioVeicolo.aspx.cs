@@ -16,6 +16,10 @@ namespace RentalApplication.Web
     {
         protected static int IdVeicolo { get; set; }
         protected static bool IsNoleggiato { get; set; }
+        protected static VeicoloManager VeicoloManager { get; set; }
+        protected static MarcaManager MarcaManager { get; set; }
+        protected static AlimentazioneManager AlimentazioneManager { get; set; }
+        protected static NoleggioManager NoleggioManager { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,17 +32,17 @@ namespace RentalApplication.Web
 
             IdVeicolo = int.Parse(Request.QueryString["id"]);
 
-            var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
-            var marcaManager = new MarcaManager(Settings.Default.RENTALCONString);
-            var alimentazioneManager = new AlimentazioneManager(Settings.Default.RENTALCONString);
-            var noleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
+            VeicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
+            MarcaManager = new MarcaManager(Settings.Default.RENTALCONString);
+            AlimentazioneManager = new AlimentazioneManager(Settings.Default.RENTALCONString);
+            NoleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
 
 
-            var veicoloModel = veicoloManager.GetVeicoloById(IdVeicolo);
+            var veicoloModel = VeicoloManager.GetVeicolo(IdVeicolo);
 
             IsNoleggiato = veicoloModel.IsNoleggiato;
 
-            List<MarcaModel> marcaList = marcaManager.GetMarcaList();
+            List<MarcaModel> marcaList = MarcaManager.GetMarcaList();
             ddlMarca.DataSource = marcaList;
             ddlMarca.DataTextField = nameof(MarcaModel.Descrizione);
             ddlMarca.DataValueField = nameof(MarcaModel.Id);
@@ -58,7 +62,7 @@ namespace RentalApplication.Web
             txtTarga.Text = veicoloModel.Targa;
             txtDataImmatricolazione.Text = veicoloModel.DataImmatricolazione.ToString();
 
-            List<AlimentazioneModel> alimentazioneList = alimentazioneManager.GetAlimentazioneList();
+            List<AlimentazioneModel> alimentazioneList = AlimentazioneManager.GetAlimentazioneList();
             ddlAlimentazione.DataSource = alimentazioneList;
             ddlAlimentazione.DataTextField = nameof(AlimentazioneModel.Descrizione);
             ddlAlimentazione.DataValueField = nameof(AlimentazioneModel.Id);
@@ -81,7 +85,7 @@ namespace RentalApplication.Web
             {
                 var datiNoleggiato = new DatiNoleggiato();
 
-                datiNoleggiato = noleggioManager.GetDatiNoleggiato(IdVeicolo);
+                datiNoleggiato = NoleggioManager.GetDatiNoleggiato(IdVeicolo);
 
                 lblCliente.Visible = true;
                 txtCliente.Visible = true;

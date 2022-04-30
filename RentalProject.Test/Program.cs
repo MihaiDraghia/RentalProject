@@ -10,7 +10,10 @@ namespace RentalProject.Test
     {
         static void Main(string[] args)
         {
-
+            //singleton
+            //cerca noleggio... pagina e query
+            //veicoloControl con btn avanti indietro
+            //impaginazione
         }
     }
 }

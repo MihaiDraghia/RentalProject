@@ -13,6 +13,9 @@ namespace RentalApplication.Web
 {
     public partial class RicercaVeicolo : System.Web.UI.Page
     {
+        protected static VeicoloManager VeicoloManager { get; set; }
+        protected static MarcaManager MarcaManager { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             pnlVeicolo.BackColor = Color.AliceBlue;
@@ -22,9 +25,11 @@ namespace RentalApplication.Web
             {
                 return;
             }
-            var marcaManager = new MarcaManager(Settings.Default.RENTALCONString);
 
-            List<MarcaModel> marcaList = marcaManager.GetMarcaList();
+            MarcaManager = new MarcaManager(Settings.Default.RENTALCONString);
+            VeicoloManager = new VeicoloManager(Properties.Settings.Default.RENTALCONString);
+
+            List<MarcaModel> marcaList = MarcaManager.GetMarcaList();
             ddlMarca.DataSource = marcaList;
             ddlMarca.DataTextField = nameof(MarcaModel.Descrizione);
             ddlMarca.DataValueField = nameof(MarcaModel.Id);
@@ -39,7 +44,6 @@ namespace RentalApplication.Web
 
         protected void btnRicerca_Click(object sender, EventArgs e)
         {
-            var veicoloManager = new VeicoloManager(Properties.Settings.Default.RENTALCONString);
 
             var ricercaVeicolo = new VeicoloManager.RicercaVeicolo();
 
@@ -73,7 +77,7 @@ namespace RentalApplication.Web
                 ricercaVeicolo.IsNoleggiato = Convert.ToBoolean(ddlNoleggiatoInt);
             }
 
-            List<VeicoloModelView> veicoloList = veicoloManager.RicercaVeicoli(ricercaVeicolo);
+            List<VeicoloModelView> veicoloList = VeicoloManager.RicercaVeicoli(ricercaVeicolo);
             gvVeicolo.DataSource = veicoloList;
             gvVeicolo.DataBind();
 
@@ -81,9 +85,9 @@ namespace RentalApplication.Web
 
         protected void gvVeicolo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var idPersona = gvVeicolo.SelectedDataKey["Id"].ToString();
+            var idVeicolo = gvVeicolo.SelectedDataKey["Id"].ToString();
 
-            Response.Redirect("~/DettaglioVeicolo.aspx" + $"?id={idPersona}");
+            Response.Redirect("~/DettaglioVeicolo.aspx" + $"?id={idVeicolo}");
         }
 
         protected void btnPulisci_Click(object sender, EventArgs e)

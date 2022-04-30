@@ -17,6 +17,8 @@ namespace RentalProject.Business.Models
         public string Note { get; set; }
         public bool IsNoleggiato { get; set; }
         public int IdTipoStatus { get; set; }
+        public DateTime? DataInserimento { get; set; }
+        public DateTime? DataModifica { get; set; }
     }
 
     public class VeicoloModelView
@@ -28,6 +30,8 @@ namespace RentalProject.Business.Models
         public DateTime? DataImmatricolazione { get; set; }
         public bool IsNoleggiato { get; set; }
         public int IdTipoStatus { get; set; }
+        public DateTime? DataInserimento { get; set; }
+        public DateTime? DataModifica { get; set; }
     }
 
 

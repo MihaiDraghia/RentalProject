@@ -14,6 +14,10 @@ namespace RentalApplication.Web
 {
     public partial class InsertVeicolo : System.Web.UI.Page
     {
+        protected static VeicoloManager VeicoloManager { get; set; }
+        protected static MarcaManager MarcaManager { get; set; }
+        protected static AlimentazioneManager AlimentazioneManager { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             pnlVeicolo.BackColor = Color.AliceBlue;
@@ -22,18 +26,19 @@ namespace RentalApplication.Web
             {
                 return;
             }
-            var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
-            var marcaManager = new MarcaManager(Settings.Default.RENTALCONString);
-            var alimentazioneManager = new AlimentazioneManager(Settings.Default.RENTALCONString);
 
-            List<MarcaModel> marcaList = marcaManager.GetMarcaList();
+            VeicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
+            MarcaManager = new MarcaManager(Settings.Default.RENTALCONString);
+            AlimentazioneManager = new AlimentazioneManager(Settings.Default.RENTALCONString);
+
+            List<MarcaModel> marcaList = MarcaManager.GetMarcaList();
             ddlMarca.DataSource = marcaList;
             ddlMarca.DataTextField = nameof(MarcaModel.Descrizione);
             ddlMarca.DataValueField = nameof(MarcaModel.Id);
             ddlMarca.DataBind();
             ddlMarca.Items.Insert(0, new ListItem("Seleziona", "-1"));
 
-            List<AlimentazioneModel> alimentazioneList = alimentazioneManager.GetAlimentazioneList();
+            List<AlimentazioneModel> alimentazioneList = AlimentazioneManager.GetAlimentazioneList();
             ddlAlimentazione.DataSource = alimentazioneList;
             ddlAlimentazione.DataTextField = nameof(AlimentazioneModel.Descrizione);
             ddlAlimentazione.DataValueField = nameof(AlimentazioneModel.Id);
@@ -63,8 +68,6 @@ namespace RentalApplication.Web
             }
             veicoloModel.IdAlimentazione = int.Parse(ddlAlimentazione.SelectedValue);
             veicoloModel.Note = txtNote.Text;
-            veicoloModel.IsNoleggiato = false;
-            veicoloModel.IdTipoStatus = 13;
 
             var inserito = veicoloManager.InsertVeicolo(veicoloModel);
 
