@@ -83,9 +83,9 @@ namespace RentalApplication.Web
 
             if (veicoloModel.IsNoleggiato.Equals(true))
             {
-                var datiNoleggiato = new DatiNoleggiato();
+                var datiNoleggiato = new NoleggioModelView();
 
-                datiNoleggiato = NoleggioManager.GetDatiNoleggiato(IdVeicolo);
+                datiNoleggiato = NoleggioManager.GetNoleggioModelView(IdVeicolo);
 
                 lblCliente.Visible = true;
                 txtCliente.Visible = true;

@@ -119,9 +119,9 @@ namespace RentalProject.Business.Managers
             return isModificato;
         }
 
-        public DatiNoleggiato GetDatiNoleggiato(int idVeicolo)
+        public NoleggioModelView GetNoleggioModelView(int idVeicolo)
         {
-            var datiNoleggiato = new DatiNoleggiato();
+            var datiNoleggiato = new NoleggioModelView();
 
             var sb = new StringBuilder();
 
@@ -164,9 +164,9 @@ namespace RentalProject.Business.Managers
                     }
                 }
 
-                if (ds.Tables.Count <= 0) return new DatiNoleggiato();
+                if (ds.Tables.Count <= 0) return new NoleggioModelView();
                 var dataTable = ds.Tables[0];
-                if (dataTable == null || dataTable.Rows.Count <= 0) return new DatiNoleggiato();
+                if (dataTable == null || dataTable.Rows.Count <= 0) return new NoleggioModelView();
 
                 DataRow dataRow = dataTable.Rows[0];
 
@@ -184,58 +184,6 @@ namespace RentalProject.Business.Managers
             }
 
             return datiNoleggiato;
-
-        }
-
-        public DatiNonNoleggiato GetDatiNonNoleggiato(int idVeicolo)
-        {
-            var datiVeicolo = new DatiNonNoleggiato();
-
-            var sb = new StringBuilder();
-
-            sb.AppendLine("SELECT ");
-            sb.AppendLine("\t v.[Id] ");
-            sb.AppendLine("\t,m.[Descrizione] as [Marca]");
-            sb.AppendLine("\t,v.[Modello]");
-            sb.AppendLine("\t,v.[Targa]");
-            sb.AppendLine("FROM [dbo].[MDVeicoli] v ");
-            sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
-            sb.AppendLine("ON v.[IdMarca] = m.[Id]");
-            sb.AppendLine($"WHERE v.[IdTipoStatus]=@IdTipoStatus ");
-            sb.AppendLine($"AND v.[Id]=@Id");
-
-            using (var cmd = new SqlCommand(sb.ToString()))
-            {
-                var ds = new DataSet();
-
-                cmd.Parameters.AddWithValue("@Id", idVeicolo);
-                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
-
-                using (var conn = new SqlConnection(this.ConnectionString))
-                {
-                    conn.Open();
-                    using (var adp = new SqlDataAdapter(cmd))
-                    {
-                        adp.SelectCommand = cmd;
-                        adp.SelectCommand.Connection = conn;
-                        adp.Fill(ds);
-                    }
-                }
-
-                if (ds.Tables.Count <= 0) return new DatiNonNoleggiato();
-                var dataTable = ds.Tables[0];
-                if (dataTable == null || dataTable.Rows.Count <= 0) return new DatiNonNoleggiato();
-
-                DataRow dataRow = dataTable.Rows[0];
-
-                datiVeicolo.Id = dataRow.Field<int>("Id");
-                datiVeicolo.Marca = dataRow.Field<string>("Marca");
-                datiVeicolo.Modello = dataRow.Field<string>("Modello");
-                datiVeicolo.Targa = dataRow.Field<string>("Targa");
-
-            }
-
-            return datiVeicolo;
 
         }
 
@@ -392,6 +340,224 @@ namespace RentalProject.Business.Managers
 
             return isRiuscito;
         }
+
+        public class RicercaNoleggio
+        {
+            public int IdMarca { get; set; }
+            public string Modello { get; set; }
+            public string Targa { get; set; }
+            public string Nome { get; set; }
+            public string Cognome { get; set; }
+            public string CodiceFiscale { get; set; }
+            public string Email { get; set; }
+            public string Telefono { get; set; }
+            public DateTime? DataInizioNoleggio { get; set; }
+            public DateTime? DataFineNoleggio { get; set; }
+            public bool? IsAttivo { get; set; }
+
+        }
+
+        public List<NoleggioModelView> RicercaNoleggi(RicercaNoleggio ricercaNoleggio)
+        {
+            var NoleggioViewList = new List<NoleggioModelView>();
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT");
+            sb.AppendLine("\t n.[Id] AS IdNoleggio");
+            sb.AppendLine("\t,n.[IdVeicolo]");
+            sb.AppendLine("\t,m.[Descrizione] AS Marca");
+            sb.AppendLine("\t,v.[Modello]");
+            sb.AppendLine("\t,v.[Targa]");
+            sb.AppendLine("\t,c.[Nome]");
+            sb.AppendLine("\t,c.[Cognome]");
+            sb.AppendLine("\t,c.[CodiceFiscale]");
+            sb.AppendLine("\t,c.[Email]");
+            sb.AppendLine("\t,c.[Telefono]");
+            sb.AppendLine("\t,n.[DataInizioNoleggio]");
+            sb.AppendLine("\t,n.[DataFineNoleggio]");
+            sb.AppendLine("\t,n.[IsAttivo] AS IsNoleggioAttivo");
+            sb.AppendLine("\t,v.[IsNoleggiato] AS IsVeicoloNoleggiato");
+            sb.AppendLine("FROM [dbo].[MDNoleggi] n ");
+            sb.AppendLine("LEFT JOIN [dbo].[MDVeicoli] v ");
+            sb.AppendLine("ON n.[IdVeicolo] = v.[Id]");
+            sb.AppendLine("LEFT JOIN [dbo].[MDClienti] c ");
+            sb.AppendLine("ON n.[IdCliente] = c.[Id]");
+            sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
+            sb.AppendLine("ON v.[IdMarca] = m.[Id]");
+            sb.AppendLine($"WHERE 1=1 ");
+
+
+            if (ricercaNoleggio.IdMarca > 0)
+            {
+                sb.AppendLine("AND m.[Id]=@IdMarca ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Modello))
+            {
+                sb.AppendLine("AND v.[Modello] LIKE '%'+@Modello+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Targa))
+            {
+                sb.AppendLine("AND v.[Targa] LIKE '%'+@Targa+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Nome))
+            {
+                sb.AppendLine("AND c.[Nome] LIKE '%'+@Nome+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Cognome))
+            {
+                sb.AppendLine("AND c.[Cognome] LIKE '%'+@Cognome+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.CodiceFiscale))
+            {
+                sb.AppendLine("AND c.[CodiceFiscale] LIKE '%'+@CodiceFiscale+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Email))
+            {
+                sb.AppendLine("AND c.[Email] LIKE '%'+@Email+'%' ");
+            }
+
+            if (!string.IsNullOrEmpty(ricercaNoleggio.Telefono))
+            {
+                sb.AppendLine("AND c.[Telefono] LIKE '%'+@Telefono+'%' ");
+            }
+
+            if (ricercaNoleggio.DataInizioNoleggio.HasValue && ricercaNoleggio.DataFineNoleggio.HasValue)
+            {
+                sb.AppendLine("AND n.[DataInizioNoleggio] >= @DataInizioNoleggio");
+                sb.AppendLine("AND n.[DataFineNoleggio] <= @DataFineNoleggio");
+            }
+
+            else if (ricercaNoleggio.DataInizioNoleggio.HasValue && !ricercaNoleggio.DataFineNoleggio.HasValue)
+            {
+                sb.AppendLine("AND n.[DataInizioNoleggio] >= @DataInizioNoleggio");
+            }
+
+            else if (!ricercaNoleggio.DataInizioNoleggio.HasValue && ricercaNoleggio.DataFineNoleggio.HasValue)
+            {
+                sb.AppendLine("AND n.[DataFineNoleggio] <= @DataFineNoleggio");
+            }
+
+            if (ricercaNoleggio.IsAttivo.HasValue)
+            {
+                sb.AppendLine("AND n.[IsAttivo]=@IsAttivo ");
+            }
+
+            sb.AppendLine(" ORDER BY n.[DataInizioNoleggio] DESC ");
+
+
+            using (var cmd = new SqlCommand(sb.ToString()))
+            {
+
+                if (ricercaNoleggio.IdMarca > 0)
+                {
+                    cmd.Parameters.AddWithValue("@IdMarca", ricercaNoleggio.IdMarca);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Modello))
+                {
+                    cmd.Parameters.AddWithValue("@Modello", ricercaNoleggio.Modello);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Targa))
+                {
+                    cmd.Parameters.AddWithValue("@Targa", ricercaNoleggio.Targa);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Nome))
+                {
+                    cmd.Parameters.AddWithValue("@Nome", ricercaNoleggio.Nome);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Cognome))
+                {
+                    cmd.Parameters.AddWithValue("@Cognome", ricercaNoleggio.Cognome);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.CodiceFiscale))
+                {
+                    cmd.Parameters.AddWithValue("@CodiceFiscale", ricercaNoleggio.CodiceFiscale);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Email))
+                {
+                    cmd.Parameters.AddWithValue("@Email", ricercaNoleggio.Email);
+                }
+
+                if (!string.IsNullOrEmpty(ricercaNoleggio.Telefono))
+                {
+                    cmd.Parameters.AddWithValue("@Telefono", ricercaNoleggio.Telefono);
+                }
+
+                if (ricercaNoleggio.DataInizioNoleggio.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@DataInizioNoleggio", ricercaNoleggio.DataInizioNoleggio);
+                }
+
+                if (ricercaNoleggio.DataFineNoleggio.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@DataFineNoleggio", ricercaNoleggio.DataFineNoleggio);
+                }
+
+                if (ricercaNoleggio.IsAttivo.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@IsAttivo", ricercaNoleggio.IsAttivo);
+                }
+
+
+                var ds = new DataSet();
+                using (var conn = new SqlConnection(this.ConnectionString))
+                {
+                    conn.Open();
+                    using (var adp = new SqlDataAdapter(cmd))
+                    {
+                        adp.SelectCommand = cmd;
+                        adp.SelectCommand.Connection = conn;
+                        adp.Fill(ds);
+                    }
+                }
+                if (ds.Tables.Count <= 0) return new List<NoleggioModelView>();
+                var dt = ds.Tables[0];
+                if (dt == null || dt.Rows.Count <= 0) return new List<NoleggioModelView>();
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    var noleggioModelView = new NoleggioModelView();
+
+                    noleggioModelView.IdNoleggio = dataRow.Field<int>("IdNoleggio");
+                    noleggioModelView.IdVeicolo = dataRow.Field<int>("IdVeicolo");
+                    noleggioModelView.Marca = dataRow.Field<string>("Marca");
+                    noleggioModelView.Modello = dataRow.Field<string>("Modello");
+                    noleggioModelView.Targa = dataRow.Field<string>("Targa");
+                    noleggioModelView.Nome = dataRow.Field<string>("Nome");
+                    noleggioModelView.Cognome = dataRow.Field<string>("Cognome");
+                    noleggioModelView.CodiceFiscale = dataRow.Field<string>("CodiceFiscale");
+                    noleggioModelView.Email = dataRow.Field<string>("Email");
+                    noleggioModelView.Telefono = dataRow.Field<string>("Telefono");
+                    noleggioModelView.DataInizioNoleggio = dataRow.Field<DateTime>("DataInizioNoleggio");
+                    noleggioModelView.DataFineNoleggio = dataRow.Field<DateTime?>("DataFineNoleggio");
+                    noleggioModelView.IsNoleggioAttivo = dataRow.Field<bool>("IsNoleggioAttivo");
+                    noleggioModelView.IsVeicoloNoleggiato = dataRow.Field<bool>("IsVeicoloNoleggiato");
+
+                    NoleggioViewList.Add(noleggioModelView);
+                }
+            }
+
+            return NoleggioViewList;
+        }
+
+
+
+
+
+
+
+
 
 
 

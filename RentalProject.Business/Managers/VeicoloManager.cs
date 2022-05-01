@@ -140,6 +140,7 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("\t,v.[DataImmatricolazione]");
             sb.AppendLine("\t,v.[IsNoleggiato]");
             sb.AppendLine("\t,v.[IdTipoStatus]");
+            sb.AppendLine("\t,v.[DataInserimento]");
             sb.AppendLine("FROM [dbo].[MDVeicoli] v ");
             sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
             sb.AppendLine("ON v.[IdMarca] = m.[Id]");
@@ -175,6 +176,8 @@ namespace RentalProject.Business.Managers
             {
                 sb.AppendLine("AND v.[IsNoleggiato] = @IsNoleggiato ");
             }
+
+            sb.AppendLine(" ORDER BY v.[DataInserimento] DESC ");
 
             using (var cmd = new SqlCommand(sb.ToString()))
             {
@@ -493,6 +496,58 @@ namespace RentalProject.Business.Managers
                 }
             }
             return isModificato;
+        }
+
+        public VeicoloModelView GetVeicoloModelView(int idVeicolo)
+        {
+            var veicoloModelView = new VeicoloModelView();
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT ");
+            sb.AppendLine("\t v.[Id] ");
+            sb.AppendLine("\t,m.[Descrizione] as [Marca]");
+            sb.AppendLine("\t,v.[Modello]");
+            sb.AppendLine("\t,v.[Targa]");
+            sb.AppendLine("FROM [dbo].[MDVeicoli] v ");
+            sb.AppendLine("LEFT JOIN [dbo].[MDMarca] m ");
+            sb.AppendLine("ON v.[IdMarca] = m.[Id]");
+            sb.AppendLine($"WHERE v.[IdTipoStatus]=@IdTipoStatus ");
+            sb.AppendLine($"AND v.[Id]=@Id");
+
+            using (var cmd = new SqlCommand(sb.ToString()))
+            {
+                var ds = new DataSet();
+
+                cmd.Parameters.AddWithValue("@Id", idVeicolo);
+                cmd.Parameters.AddWithValue("@IdTipoStatus", 13);
+
+                using (var conn = new SqlConnection(this.ConnectionString))
+                {
+                    conn.Open();
+                    using (var adp = new SqlDataAdapter(cmd))
+                    {
+                        adp.SelectCommand = cmd;
+                        adp.SelectCommand.Connection = conn;
+                        adp.Fill(ds);
+                    }
+                }
+
+                if (ds.Tables.Count <= 0) return new VeicoloModelView();
+                var dataTable = ds.Tables[0];
+                if (dataTable == null || dataTable.Rows.Count <= 0) return new VeicoloModelView();
+
+                DataRow dataRow = dataTable.Rows[0];
+
+                veicoloModelView.Id = dataRow.Field<int>("Id");
+                veicoloModelView.Marca = dataRow.Field<string>("Marca");
+                veicoloModelView.Modello = dataRow.Field<string>("Modello");
+                veicoloModelView.Targa = dataRow.Field<string>("Targa");
+
+            }
+
+            return veicoloModelView;
+
         }
 
     }

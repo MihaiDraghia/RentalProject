@@ -17,16 +17,10 @@ namespace RentalProject.Business.Models
         public bool IsAttivo { get; set; }
     }
 
-    public class DatiNonNoleggiato
-    {
-        public int Id { get; set; }
-        public string Marca { get; set; }
-        public string Modello { get; set; }
-        public string Targa { get; set; }
-    }
 
-    public class DatiNoleggiato
+    public class NoleggioModelView
     {
+        public int IdNoleggio { get; set; }
         public int IdVeicolo { get; set; }
         public string Marca { get; set; }
         public string Modello { get; set; }
@@ -36,8 +30,11 @@ namespace RentalProject.Business.Models
         public string CodiceFiscale { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
-        public int IdNoleggio { get; set; }
         public DateTime? DataInizioNoleggio { get; set; }
+        public DateTime? DataFineNoleggio { get; set; }
+        public bool IsNoleggioAttivo { get; set; }
+        public bool IsVeicoloNoleggiato { get; set; }
+
     }
 
 

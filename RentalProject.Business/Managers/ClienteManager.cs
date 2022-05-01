@@ -69,6 +69,8 @@ namespace RentalProject.Business.Managers
                 sb.AppendLine("AND [Telefono] LIKE '%'+@Telefono+'%' ");
             }
 
+            sb.AppendLine(" ORDER BY [DataInserimento] DESC ");
+
             using (var cmd = new SqlCommand(sb.ToString()))
             {
 

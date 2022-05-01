@@ -32,9 +32,9 @@ namespace RentalApplication.Web
 
             NoleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
 
-            var datiNoleggiato = new DatiNoleggiato();
+            var datiNoleggiato = new NoleggioModelView();
 
-            datiNoleggiato = NoleggioManager.GetDatiNoleggiato(IdVeicolo);
+            datiNoleggiato = NoleggioManager.GetNoleggioModelView(IdVeicolo);
 
             txtMarca.Text = datiNoleggiato.Marca;
             txtModello.Text = datiNoleggiato.Modello;

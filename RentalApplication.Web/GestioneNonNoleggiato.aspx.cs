@@ -18,6 +18,7 @@ namespace RentalApplication.Web
         protected static int IdClienteCercato { get; set; }
         protected static NoleggioManager NoleggioManager { get; set; }
         protected static ClienteManager ClienteManager { get; set; }
+        protected static VeicoloManager VeicoloManager { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,12 +36,13 @@ namespace RentalApplication.Web
             IdVeicolo = int.Parse(Request.QueryString["id"]);
             NoleggioManager = new NoleggioManager(Settings.Default.RENTALCONString);
             ClienteManager = new ClienteManager(Settings.Default.RENTALCONString);
+            VeicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
 
-            var datiVeicolo = NoleggioManager.GetDatiNonNoleggiato(IdVeicolo);
+            var veicoloModelView = VeicoloManager.GetVeicoloModelView(IdVeicolo);
 
-            txtMarca.Text = datiVeicolo.Marca;
-            txtModello.Text = datiVeicolo.Modello;
-            txtTarga.Text = datiVeicolo.Targa;
+            txtMarca.Text = veicoloModelView.Marca;
+            txtModello.Text = veicoloModelView.Modello;
+            txtTarga.Text = veicoloModelView.Targa;
 
             ddlNewSesso.Items.Insert(0, new ListItem("Seleziona", "-1"));
             ddlNewSesso.Items.Insert(1, new ListItem("Maschio", "M"));

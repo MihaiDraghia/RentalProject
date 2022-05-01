@@ -133,8 +133,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="img\RicercaVeicolo.jpg" />
+    <Content Include="img\RicercaNoleggio.jpg" />
+    <Content Include="img\InserisciVeicolo.jpg" />
     <Content Include="img\LOGO_SAFO_2016_69x50.png" />
     <Content Include="InsertVeicolo.aspx" />
+    <Content Include="RicercaNoleggio.aspx" />
     <Content Include="RicercaVeicolo.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -237,6 +241,13 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RicercaNoleggio.aspx.cs">
+      <DependentUpon>RicercaNoleggio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RicercaNoleggio.aspx.designer.cs">
+      <DependentUpon>RicercaNoleggio.aspx</DependentUpon>
     </Compile>
     <Compile Include="RicercaVeicolo.aspx.cs">
       <DependentUpon>RicercaVeicolo.aspx</DependentUpon>
