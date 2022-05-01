@@ -146,7 +146,7 @@ namespace RentalProject.Business.Managers
             sb.AppendLine("ON v.[IdMarca] = m.[Id]");
             sb.AppendLine("WHERE v.[IdTipoStatus]=@IdTipoStatus ");
 
-            if (int.TryParse(ricercaVeicolo.IdMarca.ToString(), out int idMarcaInt) && idMarcaInt > 0)
+            if (ricercaVeicolo.IdMarca > 0)
             {
                 sb.AppendLine("AND v.[IdMarca] = @IdMarca ");
             }
@@ -161,27 +161,35 @@ namespace RentalProject.Business.Managers
                 sb.AppendLine("AND v.[Targa] LIKE '%'+@Targa+'%' ");
             }
 
-            if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && ricercaVeicolo.DataImmatricolazioneFine.HasValue && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneInizio.ToString(), out DateTime dataImmatricolazioneInizioDateTime) && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneFine.ToString(), out DateTime dataImmatricolazioneFineDateTime))
+            if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && ricercaVeicolo.DataImmatricolazioneFine.HasValue)
             {
                 sb.AppendLine("AND v.[DataImmatricolazione] >= @DataImmatricolazioneInizio ");
                 sb.AppendLine("AND v.[DataImmatricolazione] <= @DataImmatricolazioneFine ");
             }
 
-            else if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneInizio.ToString(), out DateTime dataImmatricolazioneDateTime))
+            else if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && !ricercaVeicolo.DataImmatricolazioneFine.HasValue)
             {
-                sb.AppendLine("AND v.[DataImmatricolazione] = @DataImmatricolazioneInizio ");
+                sb.AppendLine("AND v.[DataImmatricolazione] >= @DataImmatricolazioneInizio ");
             }
 
-            if (ricercaVeicolo.IsNoleggiato != null && bool.TryParse(ricercaVeicolo.IsNoleggiato.ToString(), out bool isNoleggiatoBool))
+            else if (!ricercaVeicolo.DataImmatricolazioneInizio.HasValue && ricercaVeicolo.DataImmatricolazioneFine.HasValue)
+            {
+                sb.AppendLine("AND v.[DataImmatricolazione] <= @DataImmatricolazioneFine ");
+            }
+
+
+            if (ricercaVeicolo.IsNoleggiato.HasValue)
             {
                 sb.AppendLine("AND v.[IsNoleggiato] = @IsNoleggiato ");
+
             }
 
             sb.AppendLine(" ORDER BY v.[DataInserimento] DESC ");
 
+
             using (var cmd = new SqlCommand(sb.ToString()))
             {
-                if (int.TryParse(ricercaVeicolo.IdMarca.ToString(), out int idMarcaInt2) && idMarcaInt > 0)
+                if (ricercaVeicolo.IdMarca > 0)
                 {
                     cmd.Parameters.AddWithValue("@IdMarca", ricercaVeicolo.IdMarca);
                 }
@@ -194,20 +202,20 @@ namespace RentalProject.Business.Managers
                 if (!string.IsNullOrEmpty(ricercaVeicolo.Targa))
                 {
                     cmd.Parameters.AddWithValue("@Targa", ricercaVeicolo.Targa);
+
                 }
 
-                if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && ricercaVeicolo.DataImmatricolazioneFine.HasValue && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneInizio.ToString(), out DateTime dataImmatricolazioneInizioDateTime2) && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneFine.ToString(), out DateTime dataImmatricolazioneFineDateTime2))
+                if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue)
                 {
                     cmd.Parameters.AddWithValue("@DataImmatricolazioneInizio", ricercaVeicolo.DataImmatricolazioneInizio);
+                }
+
+                if (ricercaVeicolo.DataImmatricolazioneFine.HasValue)
+                {
                     cmd.Parameters.AddWithValue("@DataImmatricolazioneFine", ricercaVeicolo.DataImmatricolazioneFine);
                 }
 
-                else if (ricercaVeicolo.DataImmatricolazioneInizio.HasValue && DateTime.TryParse(ricercaVeicolo.DataImmatricolazioneInizio.ToString(), out DateTime dataImmatricolazioneDateTime2))
-                {
-                    cmd.Parameters.AddWithValue("@DataImmatricolazioneInizio", ricercaVeicolo.DataImmatricolazioneInizio);
-                }
-
-                if (ricercaVeicolo.IsNoleggiato != null && bool.TryParse(ricercaVeicolo.IsNoleggiato.ToString(), out bool isNoleggiatoBool2))
+                if (ricercaVeicolo.IsNoleggiato.HasValue)
                 {
                     cmd.Parameters.AddWithValue("@IsNoleggiato", ricercaVeicolo.IsNoleggiato);
                 }

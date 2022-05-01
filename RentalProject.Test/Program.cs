@@ -10,18 +10,24 @@ namespace RentalProject.Test
     {
         static void Main(string[] args)
         {
-            //mettere anche minuti su gvNoleggi
+            //dettaglioVeicolo dataImmatricolazione calendar?...
+
+            // btnModificaCliente? e va su DettaglioCliente? query updateCliente...?
+            //e btn elimina ..query update ..set idTipoStato=12
+
+            //verifico query ricercaVeicolo
+            //verifico insertCliente
+            //verifico ricercaCliente
+
+
+
+
             //campo ultimo ...disponibilita attuale veicolo?
 
             //btn pulisci ricerca su cercaNoleggi
             //rivere query ...isNoleggioAttivo...?
 
-            //fare cercaNoleggio
-            //allow paging=true , size=10, ...selectIndexAllow...? sito web di lorenzo 
-            //gvNoleggi selectIndexCheìanged porta a GestioneNoleggiato... redirect passare idCliente...
-
-            //cambiare cerca ..range temporale ..passare a  inizio data immatricolazione e fine data immatricolazione?... cambio query e scritta su html data immatricolazione inizio
-            //e levare tryParse...
+            //gvNoleggi selectIndexCheìanged porta a GestioneNoleggiato... redirect passare idCliente...?
 
 
             //noleggioModelView

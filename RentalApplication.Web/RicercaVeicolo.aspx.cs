@@ -15,6 +15,7 @@ namespace RentalApplication.Web
     {
         protected static VeicoloManager VeicoloManager { get; set; }
         protected static MarcaManager MarcaManager { get; set; }
+        protected static List<VeicoloModelView> VeicoloViewList { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -77,8 +78,8 @@ namespace RentalApplication.Web
                 ricercaVeicolo.IsNoleggiato = Convert.ToBoolean(ddlNoleggiatoInt);
             }
 
-            List<VeicoloModelView> veicoloList = VeicoloManager.RicercaVeicoli(ricercaVeicolo);
-            gvVeicolo.DataSource = veicoloList;
+            VeicoloViewList = VeicoloManager.RicercaVeicoli(ricercaVeicolo);
+            gvVeicolo.DataSource = VeicoloViewList;
             gvVeicolo.DataBind();
 
         }
@@ -101,6 +102,14 @@ namespace RentalApplication.Web
             gvVeicolo.DataSource = null;
             gvVeicolo.DataBind();
 
+        }
+
+
+        protected void gvVeicolo_PageIdxChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvVeicolo.PageIndex = e.NewPageIndex;
+            gvVeicolo.DataSource = VeicoloViewList;
+            gvVeicolo.DataBind();
         }
 
 

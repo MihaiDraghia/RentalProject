@@ -10,8 +10,6 @@
         <br />
         <br />
         <br />
-        <br />
-        <br />
 
         <div class="row">
 
@@ -48,8 +46,31 @@
 
 
         </div>
-        <br />
-        <br />
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <h2 class="text-center ">Inserisci Cliente</h2>
+
+                <a href="InsertCliente.aspx">
+                    <img src="img/InsertCliente.jpg" width="370" height="200" class="img-rounded " /></a>
+                <p>
+                </p>
+            </div>
+
+
+
+            <div class="col-md-4">
+                <h2 class="text-center ">Ricerca Cliente</h2>
+
+                <a href="RicercaCliente.aspx">
+                    <img src="img/RicercaCliente.jpg" width="370" height="200" class="img-rounded" /></a>
+                <p>
+                </p>
+            </div>
+
+        </div>
+
         <br />
         <br />
         <br />

@@ -11,7 +11,7 @@ namespace RentalApplication.Web
 {
 
 
-    public partial class InsertVeicolo
+    public partial class RicercaCliente
     {
 
         /// <summary>
@@ -24,85 +24,76 @@ namespace RentalApplication.Web
         protected global::RentalApplication.Web.Controls.InfoControl infoControl;
 
         /// <summary>
-        /// Controllo pnlVeicolo.
+        /// Controllo pnlCercaPersona.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlVeicolo;
+        protected global::System.Web.UI.WebControls.Panel pnlCercaPersona;
 
         /// <summary>
-        /// Controllo pnlHeadVeicolo.
+        /// Controllo pnlHeadCercaPersona.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlHeadVeicolo;
+        protected global::System.Web.UI.WebControls.Panel pnlHeadCercaPersona;
 
         /// <summary>
-        /// Controllo ddlMarca.
+        /// Controllo txtCercaNome.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMarca;
+        protected global::System.Web.UI.WebControls.TextBox txtCercaNome;
 
         /// <summary>
-        /// Controllo txtModello.
+        /// Controllo txtCercaCognome.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtModello;
+        protected global::System.Web.UI.WebControls.TextBox txtCercaCognome;
 
         /// <summary>
-        /// Controllo txtTarga.
+        /// Controllo txtCercaCF.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTarga;
+        protected global::System.Web.UI.WebControls.TextBox txtCercaCF;
 
         /// <summary>
-        /// Controllo txtDataImmatricolazione.
+        /// Controllo txtCercaEmail.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDataImmatricolazione;
+        protected global::System.Web.UI.WebControls.TextBox txtCercaEmail;
 
         /// <summary>
-        /// Controllo ddlAlimentazione.
+        /// Controllo txtCercaTelefono.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAlimentazione;
+        protected global::System.Web.UI.WebControls.TextBox txtCercaTelefono;
 
         /// <summary>
-        /// Controllo txtNote.
+        /// Controllo btnCercaPersona.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
-
-        /// <summary>
-        /// Controllo btnInserisci.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInserisci;
+        protected global::System.Web.UI.WebControls.Button btnCercaPersona;
 
         /// <summary>
         /// Controllo btnPulisci.
@@ -112,5 +103,14 @@ namespace RentalApplication.Web
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnPulisci;
+
+        /// <summary>
+        /// Controllo gvCercaPersona.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvCercaPersona;
     }
 }

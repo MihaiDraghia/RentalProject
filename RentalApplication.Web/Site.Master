@@ -57,6 +57,8 @@
                         <li><a runat="server" href="~/RicercaVeicolo">Ricerca Veicolo</a></li>
                         <li><a runat="server" href="~/InsertVeicolo">Inserisci Veicolo</a></li>
                         <li><a runat="server" href="~/RicercaNoleggio.aspx">Ricerca Noleggio</a></li>
+                        <li><a runat="server" href="~/InsertCliente.aspx">Inserisci Cliente</a></li>
+                        <li><a runat="server" href="~/RicercaCliente.aspx">Ricerca Cliente</a></li>
                     </ul>
                 </div>
             </div>

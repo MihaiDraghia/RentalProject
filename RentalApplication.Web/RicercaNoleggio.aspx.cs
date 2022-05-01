@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using RentalApplication.Web.Properties;
@@ -15,6 +17,7 @@ namespace RentalApplication.Web
     {
         protected static NoleggioManager NoleggioManager { get; set; }
         protected static MarcaManager MarcaManager { get; set; }
+        protected static List<NoleggioModelView> NoleggioViewList { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -104,12 +107,38 @@ namespace RentalApplication.Web
             }
 
 
-            List<NoleggioModelView> noleggioModelList = NoleggioManager.RicercaNoleggi(ricercaNoleggio);
-            gvNoleggio.DataSource = noleggioModelList;
+            NoleggioViewList = NoleggioManager.RicercaNoleggi(ricercaNoleggio);
+            gvNoleggio.DataSource = NoleggioViewList;
             gvNoleggio.DataBind();
 
         }
 
+        protected void gvNoleggio_PageIdxChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvNoleggio.PageIndex = e.NewPageIndex;
+            gvNoleggio.DataSource = NoleggioViewList;
+            gvNoleggio.DataBind();
+
+        }
+
+
+        protected void btnPulisci_Click(object sender, EventArgs e)
+        {
+            ddlMarca.SelectedIndex = 0;
+            txtModello.Text = String.Empty;
+            txtTarga.Text = String.Empty;
+            txtDataInizioNoleggio.Text = String.Empty;
+            txtDataFineNoleggio.Text = String.Empty;
+            ddlAttivo.SelectedIndex = 0;
+            txtNome.Text = String.Empty;
+            txtCognome.Text = String.Empty;
+            txtCF.Text = String.Empty;
+            txtEmail.Text = String.Empty;
+            txtTelefono.Text = String.Empty;
+            gvNoleggio.DataSource = null;
+            gvNoleggio.DataBind();
+
+        }
 
 
     }

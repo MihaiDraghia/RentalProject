@@ -46,6 +46,8 @@
                     </asp:DropDownList>
                 </div>
                 <asp:Button runat="server" ID="btnRicerca" Text="Cerca" CssClass="btn btn-default" OnClick="btnRicerca_Click" />
+                <asp:Button runat="server" ID="btnPulisci" Text="Nuova Ricerca" CssClass="btn btn-default" OnClick="btnPulisci_Click" />
+
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -80,7 +82,7 @@
 
 
 
-    <asp:GridView runat="server" ID="gvNoleggio" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false">
+    <asp:GridView runat="server" ID="gvNoleggio" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false" AllowPaging="True" PageSize="15" OnPageIndexChanging="gvNoleggio_PageIdxChanging">
         <Columns>
             <asp:BoundField DataField="Nome" HeaderText="Nome">
                 <HeaderStyle HorizontalAlign="Center" />

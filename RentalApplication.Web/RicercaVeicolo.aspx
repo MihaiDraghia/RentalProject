@@ -29,12 +29,12 @@
                 </asp:TextBox>
             </div>
             <div class="form-group">
-                <label for="txtDataImmatricolazioneInizio">Data Immatricolazione (o inizio range temporale se viene impostata anche una fine) </label>
+                <label for="txtDataImmatricolazioneInizio">Data Immatricolazione inizio ricerca </label>
                 <asp:TextBox runat="server" ID="txtDataImmatricolazioneInizio" CssClass="form-control" placeholder="gg/mm/aaaa" Type="datetime-local">
                 </asp:TextBox>
             </div>
             <div class="form-group">
-                <label for="txtDataImmatricolazioneFine">Data Immatricolazione fine</label>
+                <label for="txtDataImmatricolazioneFine">Data Immatricolazione fine ricerca</label>
                 <asp:TextBox runat="server" ID="txtDataImmatricolazioneFine" CssClass="form-control" placeholder="gg/mm/aaaa" Type="datetime-local">
                 </asp:TextBox>
             </div>
@@ -48,7 +48,7 @@
         </asp:Panel>
     </asp:Panel>
 
-    <asp:GridView runat="server" ID="gvVeicolo" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false" OnSelectedIndexChanged="gvVeicolo_SelectedIndexChanged" DataKeyNames="Id" AutoGenerateSelectButton="true">
+    <asp:GridView runat="server" ID="gvVeicolo" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false" OnSelectedIndexChanged="gvVeicolo_SelectedIndexChanged" DataKeyNames="Id" AutoGenerateSelectButton="true" AllowPaging="True" PageSize="15" OnPageIndexChanging="gvVeicolo_PageIdxChanging">
         <Columns>
             <asp:BoundField DataField="Marca" HeaderText="Marca">
                 <HeaderStyle HorizontalAlign="Center" />

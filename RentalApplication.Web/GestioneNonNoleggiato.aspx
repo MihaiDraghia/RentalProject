@@ -140,7 +140,7 @@
     </asp:Panel>
 
 
-    <asp:GridView runat="server" ID="gvCercaPersona" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false" OnSelectedIndexChanged="gvCercaPersona_SelectedIndexChanged" DataKeyNames="Id" AutoGenerateSelectButton="true">
+    <asp:GridView runat="server" ID="gvCercaPersona" CssClass="table table-bordered table-hover table-striped no-margin" BorderStyle="None" AutoGenerateColumns="false" OnSelectedIndexChanged="gvCercaPersona_SelectedIndexChanged" DataKeyNames="Id" AutoGenerateSelectButton="true" AllowPaging="True" PageSize="10" OnPageIndexChanging="gvCercaPersona_PageIdxChanging">
         <Columns>
             <asp:BoundField DataField="Nome" HeaderText="Nome">
                 <HeaderStyle HorizontalAlign="Center" />

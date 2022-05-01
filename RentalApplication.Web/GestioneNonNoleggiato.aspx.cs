@@ -19,6 +19,7 @@ namespace RentalApplication.Web
         protected static NoleggioManager NoleggioManager { get; set; }
         protected static ClienteManager ClienteManager { get; set; }
         protected static VeicoloManager VeicoloManager { get; set; }
+        protected static List<ClienteModel> ClienteModelList { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -126,8 +127,8 @@ namespace RentalApplication.Web
             ricercaCliente.Email = txtCercaEmail.Text;
             ricercaCliente.Telefono = txtCercaTelefono.Text;
 
-            List<ClienteModel> clienteList = ClienteManager.RicercaClienti(ricercaCliente);
-            gvCercaPersona.DataSource = clienteList;
+            ClienteModelList = ClienteManager.RicercaClienti(ricercaCliente);
+            gvCercaPersona.DataSource = ClienteModelList;
             gvCercaPersona.DataBind();
 
         }
@@ -347,7 +348,12 @@ namespace RentalApplication.Web
         }
 
 
-
+        protected void gvCercaPersona_PageIdxChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvCercaPersona.PageIndex = e.NewPageIndex;
+            gvCercaPersona.DataSource = ClienteModelList;
+            gvCercaPersona.DataBind();
+        }
     }
 }
 

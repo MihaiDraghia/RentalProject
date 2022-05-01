@@ -49,6 +49,8 @@ namespace RentalApplication.Web
 
         protected void btnInserisci_Click(object sender, EventArgs e)
         {
+            infoControl.Visible = true;
+
             var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
 
             if (!isFormInsertValido())
@@ -147,6 +149,25 @@ namespace RentalApplication.Web
             return verificaCorrettezza;
         }
 
+
+        protected void btnPulisci_Click(object sender, EventArgs e)
+        {
+            ddlMarca.SelectedIndex = 0;
+            txtModello.Text = String.Empty;
+            txtTarga.Text = String.Empty;
+            txtDataImmatricolazione.Text = String.Empty;
+            ddlAlimentazione.SelectedIndex = 0;
+            txtNote.Text = String.Empty;
+
+            ddlMarca.BorderColor = Color.LightGray;
+            txtModello.BorderColor = Color.LightGray;
+            txtTarga.BorderColor = Color.LightGray;
+            txtDataImmatricolazione.BorderColor = Color.LightGray;
+            ddlAlimentazione.BorderColor = Color.LightGray;
+            txtNote.BorderColor = Color.LightGray;
+
+            infoControl.Visible = false;
+        }
 
 
     }

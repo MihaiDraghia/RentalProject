@@ -11,7 +11,7 @@ namespace RentalApplication.Web
 {
 
 
-    public partial class InsertVeicolo
+    public partial class DettaglioCliente
     {
 
         /// <summary>
@@ -24,93 +24,129 @@ namespace RentalApplication.Web
         protected global::RentalApplication.Web.Controls.InfoControl infoControl;
 
         /// <summary>
-        /// Controllo pnlVeicolo.
+        /// Controllo pnlCliente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlVeicolo;
+        protected global::System.Web.UI.WebControls.Panel pnlCliente;
 
         /// <summary>
-        /// Controllo pnlHeadVeicolo.
+        /// Controllo pnlHeadCliente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlHeadVeicolo;
+        protected global::System.Web.UI.WebControls.Panel pnlHeadCliente;
 
         /// <summary>
-        /// Controllo ddlMarca.
+        /// Controllo txtNome.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMarca;
+        protected global::System.Web.UI.WebControls.TextBox txtNome;
 
         /// <summary>
-        /// Controllo txtModello.
+        /// Controllo txtCognome.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtModello;
+        protected global::System.Web.UI.WebControls.TextBox txtCognome;
 
         /// <summary>
-        /// Controllo txtTarga.
+        /// Controllo txtCF.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTarga;
+        protected global::System.Web.UI.WebControls.TextBox txtCF;
 
         /// <summary>
-        /// Controllo txtDataImmatricolazione.
+        /// Controllo txtDataNascita.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDataImmatricolazione;
+        protected global::System.Web.UI.WebControls.TextBox txtDataNascita;
 
         /// <summary>
-        /// Controllo ddlAlimentazione.
+        /// Controllo ddlSesso.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAlimentazione;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSesso;
 
         /// <summary>
-        /// Controllo txtNote.
+        /// Controllo btnModificaCliente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
+        protected global::System.Web.UI.WebControls.Button btnModificaCliente;
 
         /// <summary>
-        /// Controllo btnInserisci.
+        /// Controllo btnElimina.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInserisci;
+        protected global::System.Web.UI.WebControls.Button btnElimina;
 
         /// <summary>
-        /// Controllo btnPulisci.
+        /// Controllo txtIndirizzo.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPulisci;
+        protected global::System.Web.UI.WebControls.TextBox txtIndirizzo;
+
+        /// <summary>
+        /// Controllo txtCitta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCitta;
+
+        /// <summary>
+        /// Controllo txtCap.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCap;
+
+        /// <summary>
+        /// Controllo txtEmail.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+
+        /// <summary>
+        /// Controllo txtTelefono.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTelefono;
     }
 }

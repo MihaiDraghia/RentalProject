@@ -375,6 +375,173 @@ namespace RentalProject.Business.Managers
             return idInserito;
         }
 
+        public bool UpdateCliente(ClienteModel clienteModel)
+        {
+            bool isModificato = false;
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("UPDATE ");
+            sb.AppendLine("[dbo].[MDClienti] ");
+            sb.AppendLine("SET ");
+            sb.AppendLine("\t [Nome]=@Nome");
+            sb.AppendLine("\t,[Cognome]=@Cognome");
+            sb.AppendLine("\t,[CodiceFiscale]=@CodiceFiscale");
+            sb.AppendLine("\t,[DataNascita]=@DataNascita");
+            sb.AppendLine("\t,[Sesso]=@Sesso");
+            sb.AppendLine("\t,[Indirizzo]=@Indirizzo");
+            sb.AppendLine("\t,[Citta]=@Citta");
+            sb.AppendLine("\t,[Cap]=@Cap");
+            sb.AppendLine("\t,[Email]=@Email");
+            sb.AppendLine("\t,[Telefono]=@Telefono");
+            sb.AppendLine("\t,[DataModifica]=@DataModifica");
+            sb.AppendLine("WHERE Id=@Id");
+
+            using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@Id", clienteModel.Id);
+                    sqlCommand.Parameters.AddWithValue("@DataModifica", DateTime.Now);
+
+
+                    if (string.IsNullOrEmpty(clienteModel.Nome))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Nome", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Nome", clienteModel.Nome);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Cognome))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Cognome", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Cognome", clienteModel.Cognome);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.CodiceFiscale))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@CodiceFiscale", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@CodiceFiscale", clienteModel.CodiceFiscale);
+                    }
+
+                    if (!clienteModel.DataNascita.HasValue)
+                    {
+                        sqlCommand.Parameters.AddWithValue("@DataNascita", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@DataNascita", clienteModel.DataNascita);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Sesso) || (!clienteModel.Sesso.Equals("M") && !clienteModel.Sesso.Equals("F")))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Sesso", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Sesso", clienteModel.Sesso);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Indirizzo))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Indirizzo", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Indirizzo", clienteModel.Indirizzo);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Citta))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Citta", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Citta", clienteModel.Citta);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Cap))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Cap", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Cap", clienteModel.Cap);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Email))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Email", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Email", clienteModel.Email);
+                    }
+
+                    if (string.IsNullOrEmpty(clienteModel.Telefono))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Telefono", DBNull.Value);
+                    }
+                    else
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Telefono", clienteModel.Telefono);
+                    }
+
+
+                    var numRigheInserite = sqlCommand.ExecuteNonQuery();
+
+                    isModificato = true;
+                }
+            }
+            return isModificato;
+        }
+
+
+        public bool EliminaCliente(int idCliente)
+        {
+            bool isEliminato = false;
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("UPDATE ");
+            sb.AppendLine("[dbo].[MDClienti] ");
+            sb.AppendLine("SET ");
+            sb.AppendLine($"\t[IdTipoStatus]=@IdTipoStatus");
+            sb.AppendLine($"WHERE Id=@Id");
+
+            using (SqlConnection sqlConnection = new SqlConnection(this.ConnectionString))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(sb.ToString(), sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@Id", idCliente);
+                    sqlCommand.Parameters.AddWithValue("@IdTipoStatus", 12);
+
+                    var numRigheInserite = sqlCommand.ExecuteNonQuery();
+
+                    isEliminato = true;
+                }
+            }
+            return isEliminato;
+
+        }
+
+
+
+
+
+
 
 
     }

@@ -60,7 +60,7 @@ namespace RentalApplication.Web
 
             txtModello.Text = veicoloModel.Modello;
             txtTarga.Text = veicoloModel.Targa;
-            txtDataImmatricolazione.Text = veicoloModel.DataImmatricolazione.ToString();
+            txtDataImmatricolazione.Text = Convert.ToDateTime(veicoloModel.DataImmatricolazione).ToShortDateString();
 
             List<AlimentazioneModel> alimentazioneList = AlimentazioneManager.GetAlimentazioneList();
             ddlAlimentazione.DataSource = alimentazioneList;
@@ -110,8 +110,6 @@ namespace RentalApplication.Web
 
         protected void btnModifica_Click(object sender, EventArgs e)
         {
-            var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
-
             if (!isFormUpdateValido())
             {
                 infoControl.SetMessage(InfoControl.TipoInfo.Danger, "Si è verificato un errore, verifica la completezza dei campi necessari ");
@@ -131,7 +129,7 @@ namespace RentalApplication.Web
             veicoloModel.IdAlimentazione = int.Parse(ddlAlimentazione.SelectedValue);
             veicoloModel.Note = txtNote.Text;
 
-            var modificato = veicoloManager.UpdateVeicolo(veicoloModel);
+            var modificato = VeicoloManager.UpdateVeicolo(veicoloModel);
 
             if (!modificato)
             {
@@ -139,14 +137,12 @@ namespace RentalApplication.Web
                 return;
             }
 
-            infoControl.SetMessage(InfoControl.TipoInfo.Success, "Veicolo modificato ");
+            infoControl.SetMessage(InfoControl.TipoInfo.Success, "Modifica dati Veicolo effettuata ");
         }
 
         protected void btnElimina_Click(object sender, EventArgs e)
         {
-            var veicoloManager = new VeicoloManager(Settings.Default.RENTALCONString);
-
-            var eliminato = veicoloManager.EliminaVeicolo(IdVeicolo);
+            var eliminato = VeicoloManager.EliminaVeicolo(IdVeicolo);
 
             if (!eliminato)
             {
@@ -155,6 +151,9 @@ namespace RentalApplication.Web
             }
 
             infoControl.SetMessage(InfoControl.TipoInfo.Success, "Veicolo eliminato ");
+            btnElimina.Visible = false;
+            btnModifica.Visible = false;
+            btnGestioneNoleggio.Visible = false;
 
         }
 

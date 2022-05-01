@@ -44,6 +44,8 @@
                 </asp:TextBox>
             </div>
             <asp:Button runat="server" ID="btnInserisci" Text="Inserisci" CssClass="btn btn-default" OnClick="btnInserisci_Click" />
+            <asp:Button runat="server" ID="btnPulisci" Text="Nuovo Inserimento" CssClass="btn btn-default" OnClick="btnPulisci_Click" />
+
         </asp:Panel>
     </asp:Panel>
 </asp:Content>
